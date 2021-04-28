@@ -23,6 +23,7 @@ class _MyTorchAppState extends State<MyTorchApp> {
     String message = '';
     try{
       final String resultMessage = await platform.invokeMethod('toggleFlashlight');
+      print(resultMessage);
     } on PlatformException catch (err) {
       message = 'Failed to toggle Flashlight: ${err.message}';
     }
@@ -36,8 +37,11 @@ class _MyTorchAppState extends State<MyTorchApp> {
       body: Center(
         child: Switch(
           value: _switchValue,
-          onChanged: (val){
-            // invoke method natively
+          onChanged: (val) async{
+            setState(() {
+              _switchValue = !_switchValue;
+            });
+            await _toggleFlashlight();
             // toggle _switchValue
           },
         ),
